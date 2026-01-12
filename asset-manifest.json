@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/hola/static/css/main.f833045d.css",
+    "main.js": "/hola/static/js/main.3e413b75.js",
+    "static/js/453.d0d7a711.chunk.js": "/hola/static/js/453.d0d7a711.chunk.js",
+    "static/media/Spinner@1x-1.0s-200px-200px.gif": "/hola/static/media/Spinner@1x-1.0s-200px-200px.d8b18d7c4a1ba8e15756.gif",
+    "index.html": "/hola/index.html",
+    "main.f833045d.css.map": "/hola/static/css/main.f833045d.css.map",
+    "main.3e413b75.js.map": "/hola/static/js/main.3e413b75.js.map",
+    "453.d0d7a711.chunk.js.map": "/hola/static/js/453.d0d7a711.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f833045d.css",
+    "static/js/main.3e413b75.js"
+  ]
+}
