@@ -18,6 +18,8 @@ export default class App extends Component {
 
             <div className="flex-grow-1 p-3">
               <Routes>
+                                <Route path="/hola" element={<News key="general" pageSize={15} country="us" category="general"/>} />
+
                 <Route path="/" element={<News key="general" pageSize={15} country="us" category="general"/>} />
                 <Route path="/home" element={<News key="home" pageSize={15} country="us" category="general"/>} />
                 <Route path="/business" element={<News key="business" pageSize={15} country="us" category="business"/>} />
