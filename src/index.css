@@ -1,3 +1,4 @@
+/* ---------------- Global Styles ---------------- */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,15 +6,172 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-background-image: linear-gradient(black, yellow,red);
 
-  background-repeat: no-repeat;
-
-
-
+  /* Full-page background image */
+  background-image: url('./components/ronaldo.png'); /* your downloaded image */
+  background-size: cover;           /* stretch to cover entire viewport */
+  background-position: center;      /* center the image */
+  background-repeat: no-repeat;     /* do not tile */
+  background-attachment: fixed;     /* stays fixed on scroll */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* Container padding */
+.container {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* ---------------- Navbar ---------------- */
+.navbar-custom {
+  background-image: url('./components/ronaldo.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand {
+  color: white !important;
+  font-weight: 500;
+}
+
+.navbar-custom .nav-link:hover {
+  color: #ffd700 !important; /* highlight on hover */
+}
+
+.navbar-toggler {
+  border-color: rgba(255,255,255,0.5);
+}
+
+/* ---------------- Left Sidebar ---------------- */
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: rgba(33,37,41,0.9); /* slightly transparent dark */
+  color: white;
+  padding: 1rem;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.sidebar .nav-link {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar .nav-link.active {
+  background-color: #0d6efd;
+  border-radius: 5px;
+}
+
+.sidebar .dropdown-menu {
+  background-color: #343a40;
+  color: white;
+}
+
+/* Collapse sidebar on mobile */
+@media (max-width: 991px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+/* ---------------- News Cards ---------------- */
+.card {
+  position: relative;
+  border-radius: 10px;
+ 
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  width: 100%;
+  height: 200px;
+  object-fit: cover; /* cover image properly */
+}
+
+
+
+.card .card-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; 
+  gap: 10px;              
+  padding-right: 0.5rem;
+}
+
+.card .badge {
+  display: flex;             
+  align-items: center;        
+  justify-content: center;    
+  
+  font-size: 0.8rem;        
+  background-color: #dc3545;  
+  color: white;
+  border-radius: 1rem;
+  
+  width: 100px;                
+  position: absolute;        
+          
+  transform: translate(-50%, -50%); 
+  white-space: nowrap;      
+}
+
+@media (max-width: 767px) {
+  .card .badge {
+    font-size: 0.6rem; 
+    padding: 0.2em 0.4em;
+  }
+}
+
+/* Card text */
+.card-text {
+  font-size: 0.9rem;
+}
+
+/* Responsive grid for mobile */
+@media (max-width: 767px) {
+  .row.g-5 {
+    row-gap: 2rem;
+  }
+  .card {
+    width: 100% !important;
+  }
+}
+
+/* ---------------- Buttons ---------------- */
+.btn-dark {
+  background-color: #343a40;
+  border-color: #343a40;
+  transition: background-color 0.2s ease;
+}
+
+.btn-dark:hover {
+  background-color: #495057;
+  border-color: #495057;
+}
+
+/* ---------------- Misc ---------------- */
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+.card-body {
+  padding: 1.25rem; /* Ensure there is enough "breathing room" inside the card */
 }

@@ -1,0 +1,6 @@
+.card
+{
+    background-color: black;
+    color: aliceblue;
+    filter: drop-shadow(10px 10px 10px white);
+}

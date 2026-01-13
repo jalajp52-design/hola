@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-
+import './newsitem.css'
 export class Newsitem extends Component {
 
   render() {
-    let { title, description, url, newsurl } = this.props;
+    let { title, description, url, newsurl ,author,date,source} = this.props;
 
     return (
       <div>
@@ -14,8 +14,17 @@ export class Newsitem extends Component {
             alt="..."
           />
           <div className="card-body">
-            <h5 className="card-title">{title}...</h5>
+            <h5 className="card-title">
+  {title}...
+  <div className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    {source} 
+  
+  </div>
+</h5>
             <p className="card-text">{description}...</p>
+                <p class="card-text"><small class="text-muted">By  By {author ? author : "Unknown"} | Last updated{" "}
+                {date ? new Date(date).toGMTString() : "N/A"} </small></p>
+
             <a
               href={newsurl}
               target="_blank"
