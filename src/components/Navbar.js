@@ -1,8 +1,25 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export class Navbar extends Component {
-  render(props) {
+  constructor(props) {
+    super(props);
+    this.state = { query: '' };
+  }
+
+  handleInputChange = (e) => {
+    this.setState({ query: e.target.value });
+  }
+
+  handleSearch = (e) => {
+    e.preventDefault();
+    const { query } = this.state;
+    if (query.trim() !== '') {
+      this.props.navigate(`/search/${query}`);
+    }
+  }
+
+  render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container-fluid">
@@ -24,13 +41,14 @@ export class Navbar extends Component {
               <li className="nav-item"><Link className="nav-link" to="/technology">Technology</Link></li>
             </ul>
 
-            {/* Search form inline */}
-            <form className="d-flex" role="search">
+            <form className="d-flex" role="search" onSubmit={this.handleSearch}>
               <input
                 className="form-control me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={this.state.query}
+                onChange={this.handleInputChange}
               />
               <button className="btn btn-outline-success" type="submit">Search</button>
             </form>
@@ -42,4 +60,8 @@ export class Navbar extends Component {
   }
 }
 
-export default Navbar;
+// Wrap to use navigate
+export default function NavbarWithNavigate(props) {
+  const navigate = useNavigate();
+  return <Navbar {...props} navigate={navigate} />;
+}

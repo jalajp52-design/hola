@@ -8,8 +8,9 @@ import './news.css';
 export class News extends Component {
   static defaultProps = {
     country: 'in',
-    pageSize: 15, // Updated to your requested 15
+    pageSize: 15,
     category: 'general',
+    searchQuery: '',
   }
 
   static propTypes = {
@@ -17,6 +18,8 @@ export class News extends Component {
     pageSize: PropTypes.number,
     category: PropTypes.string,
     setProgress: PropTypes.func,
+    searchQuery: PropTypes.string,
+    apiKey: PropTypes.string,
   }
 
   constructor(props) {
@@ -24,28 +27,41 @@ export class News extends Component {
     this.state = {
       articles: [],
       loading: false,
-      scrollLoading: false,
       page: 1,
       totalResult: 0
     }
     document.title = `${this.props.category}-news jj`;
   }
 
-  async update(pageNo) {
+  async update(pageNo = 1) {
     this.props.setProgress(10);
     this.setState({ loading: true });
 
-    let url = `https://saurav.tech/NewsAPI/top-headlines/category/${this.props.category}/${this.props.country}.json`;
-    let data = await fetch(url);
-    this.props.setProgress(50);
-    let parsedData = await data.json();
+    let url = '';
+    if (this.props.searchQuery && this.props.searchQuery.trim() !== '') {
+      url = `https://newsapi.org/v2/everything?q=${this.props.searchQuery}&pageSize=${this.props.pageSize}&page=${pageNo}&apiKey=${this.props.apiKey}`;
+    } else {
+      url = `https://saurav.tech/NewsAPI/top-headlines/category/${this.props.category}/${this.props.country}.json`;
+    }
 
-    this.setState({
-      articles: parsedData.articles || [],
-      loading: false,
-      page: pageNo,
-      totalResult: parsedData.totalResults || (parsedData.articles ? parsedData.articles.length : 0)
-    });
+    try {
+      let data = await fetch(url);
+      this.props.setProgress(50);
+      let parsedData = await data.json();
+      const articles = parsedData.articles || [];
+
+      this.setState({
+        articles: articles,
+        loading: false,
+        page: pageNo,
+        totalResult: parsedData.totalResults || articles.length
+      });
+
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      this.setState({ loading: false, articles: [], totalResult: 0 });
+    }
+
     this.props.setProgress(100);
   }
 
@@ -66,37 +82,56 @@ export class News extends Component {
   }
 
   fetchMoreData = async () => {
-    // Note: Saurav.tech is static, so we append the same data to simulate growth
-    let url = `https://saurav.tech/NewsAPI/top-headlines/category/${this.props.category}/${this.props.country}.json`;
-    let data = await fetch(url);
-    let parsedData = await data.json();
+    const { page, articles } = this.state;
+    const nextPage = page + 1;
+    const { pageSize, category, country, searchQuery, apiKey } = this.props;
 
-    this.setState({
-      articles: this.state.articles.concat(parsedData.articles || []),
-      totalResult: parsedData.totalResults || (parsedData.articles ? parsedData.articles.length : 0)
-    });
+    let url = '';
+    if (searchQuery && searchQuery.trim() !== '') {
+      url = `https://newsapi.org/v2/everything?q=${searchQuery}&pageSize=${pageSize}&page=${nextPage}&apiKey=${apiKey}`;
+    } else {
+      url = `https://saurav.tech/NewsAPI/top-headlines/category/${category}/${country}.json`;
+    }
+
+    try {
+      let data = await fetch(url);
+      let parsedData = await data.json();
+      const newArticles = parsedData.articles || [];
+
+      this.setState({
+        articles: articles.concat(newArticles),
+        page: nextPage,
+        totalResult: parsedData.totalResults || articles.length + newArticles.length
+      });
+    } catch (error) {
+      console.error("Error fetching more news:", error);
+    }
   }
 
   render() {
     const { articles, loading, page, totalResult } = this.state;
-    const { pageSize } = this.props;
+    const { pageSize, searchQuery } = this.props;
 
-    // Filter to show 15 per page
-    const displayedArticles = articles.slice((page - 1) * pageSize, page * pageSize);
+    const displayedArticles = articles.slice(
+      (page - 1) * pageSize,
+      page * pageSize
+    );
 
     return (
       <div className="container my-3">
-        <h2 className="text-center" style={{ margin: '35px 0px', marginTop: '90px' }}>Top Headlines</h2>
-        
-        {loading && <Spin />}
+        <h2 className="text-center" style={{ margin: '35px 0px', marginTop: '90px' }}>
+          {searchQuery ? `Search Results for "${searchQuery}"` : 'Top Headlines'}
+        </h2>
+
+        {/* ✅ Spinner disabled for search */}
+        {loading && !searchQuery && <Spin />}
 
         <InfiniteScroll
           dataLength={articles.length}
           next={this.fetchMoreData}
-          hasMore={articles.length < totalResult}
-          loader={<Spin />}
-          // FIX: This prevents the cards from being cut off by the container
-          style={{ overflow: 'visible' }} 
+          hasMore={articles.length < totalResult && !loading}
+          loader={searchQuery ? null : <Spin />} 
+          style={{ overflow: 'visible' }}
         >
           <div className="container">
             <div className="row g-5">

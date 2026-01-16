@@ -34,12 +34,14 @@ code {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+ 
 }
 
 .navbar-custom .nav-link,
 .navbar-custom .navbar-brand {
   color: white !important;
   font-weight: 500;
+  
 }
 
 .navbar-custom .nav-link:hover {
@@ -174,4 +176,12 @@ html, body {
 }
 .card-body {
   padding: 1.25rem; /* Ensure there is enough "breathing room" inside the card */
+}
+.navbar 
+{
+  background-color: #dc3545;
+  color: aliceblue;
+  height: 100px;
+ font-family: Arial, Helvetica, sans-serif;
+ font-weight: bold;
 }
